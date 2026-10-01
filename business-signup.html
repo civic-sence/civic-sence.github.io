@@ -305,14 +305,14 @@
   <nav class="nav">
     <a href="index.html" class="logo">CIVICSENSE</a>
     <ul class="nav-links">
-      <li><a href="index.html#feed">SOCIAL</a></li>
+      <li><a href="social.html">SOCIAL</a></li>
       <li><a href="index.html#gallery">GALLERY</a></li>
       <li><a href="index.html#directory">DIRECTORY</a></li>
       <li><a href="index.html#stories">STORIES</a></li>
       <li><a href="index.html#pricing">PRICING</a></li>
     </ul>
     <div class="nav-actions">
-      <a href="#">LOGIN</a>
+      <a href="login.html">LOGIN</a>
       <a href="signup.html" class="btn-signup">SIGN UP →</a>
     </div>
   </nav>
@@ -475,8 +475,9 @@
         });
       }
 
-      showSuccess('Business account created! Check your email to confirm, then you can log in.');
+      showSuccess('Business account created! Redirecting to your profile…');
       form.reset();
+      setTimeout(() => { window.location.href = 'business-profile.html'; }, 1200);
     } catch (err) {
       console.error(err);
       showError(err.message || 'Something went wrong. Please try again.');

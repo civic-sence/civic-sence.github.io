@@ -612,83 +612,9 @@
         </div>
       </div>
 
-      <!-- Sample posts (civic-themed) -->
-      <article class="post">
-        <div class="post-header">
-          <img class="post-avatar" src="https://i.pravatar.cc/88?img=12" alt="">
-          <div class="post-meta">
-            <div class="post-name-row">
-              <span class="post-name">Maya Chen</span>
-              <span class="badge badge-ok">HELPER</span>
-              <span class="badge badge-pro">PRO</span>
-              <span class="post-handle">@mayachen</span>
-            </div>
-            <div class="post-role">Community Organizer · Green Streets</div>
-          </div>
-          <span class="post-time">Sep 28th<br>12:27 PM</span>
-        </div>
-        <div class="post-body">
-          <p>Organized a neighborhood cleanup this morning. 40 bags of litter, 12 volunteers, and one very happy park.</p>
-          <p>Small acts, big difference. Who’s joining next weekend?</p>
-        </div>
-        <div class="post-media">
-          <img src="https://picsum.photos/id/1015/640/280" alt="Cleanup">
-        </div>
-        <div class="post-actions">
-          <button>♡ 48</button>
-          <button>💬 12</button>
-          <button>↗ Share</button>
-          <button>🔖</button>
-        </div>
-      </article>
-
-      <article class="post">
-        <div class="post-header">
-          <img class="post-avatar" src="https://i.pravatar.cc/88?img=33" alt="">
-          <div class="post-meta">
-            <div class="post-name-row">
-              <span class="post-name">James Okonkwo</span>
-              <span class="badge badge-biz">BUSINESS</span>
-              <span class="post-handle">@jamesok</span>
-            </div>
-            <div class="post-role">Founder · MealShare Kitchen</div>
-          </div>
-          <span class="post-time">Sep 27th<br>9:14 AM</span>
-        </div>
-        <div class="post-body">
-          <p>We just hit 10,000 meals donated this year. Thank you to every volunteer who showed up with a ladle and a smile.</p>
-        </div>
-        <div class="post-actions">
-          <button>♡ 126</button>
-          <button>💬 31</button>
-          <button>↗ Share</button>
-          <button>🔖</button>
-        </div>
-      </article>
-
-      <article class="post">
-        <div class="post-header">
-          <img class="post-avatar" src="https://i.pravatar.cc/88?img=47" alt="">
-          <div class="post-meta">
-            <div class="post-name-row">
-              <span class="post-name">Priya Sharma</span>
-              <span class="badge badge-ok">HELPER</span>
-              <span class="post-handle">@priyadoesgood</span>
-            </div>
-            <div class="post-role">Tutor · After-School Network</div>
-          </div>
-          <span class="post-time">Sep 26th<br>6:02 PM</span>
-        </div>
-        <div class="post-body">
-          <p>Helped three kids finish their science projects today. One of them wants to be an astronaut now. That’s the best feedback I could ask for.</p>
-        </div>
-        <div class="post-actions">
-          <button>♡ 89</button>
-          <button>💬 22</button>
-          <button>↗ Share</button>
-          <button>🔖</button>
-        </div>
-      </article>
+      <!-- Posts load here from Supabase (or after you post) -->
+      <div id="posts-list"></div>
+      <div class="empty" id="empty-state">No posts yet. Be the first to share a good thing.</div>
     </main>
 
     <!-- RIGHT RAIL -->
@@ -701,28 +627,156 @@
   </div>
 
 <script>
-  // ========== SUPABASE (optional – fill in to enable live posts) ==========
   const SUPABASE_URL = 'https://upmlijvwbzctaglsrcfu.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwbWxpanZ3YnpjdGFnbHNyY2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4MjA1NDcsImV4cCI6MjEwNjM5NjU0N30.-hIK_WXzbbW55WQ5KrWZPiHRQwhpE9850VCHbmr8PcM';
-  let supabase = null;
-  try {
-    if (window.supabase && SUPABASE_URL.includes('YOUR_PROJECT') === false) {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-  } catch (_) {}
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const textarea = document.getElementById('post-text');
   const postBtn = document.getElementById('post-btn');
   const charCount = document.getElementById('char-count');
+  const postsList = document.getElementById('posts-list');
+  const emptyState = document.getElementById('empty-state');
+  const navAvatar = document.querySelector('.nav-avatar');
   const MAX = 1000;
+  let currentUser = null;
+  let currentProfile = null;
+
+  function escapeHtml(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function formatTime(iso) {
+    if (!iso) return 'Just now';
+    const d = new Date(iso);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const day = d.getDate();
+    const suffix = day === 1 || day === 21 || day === 31 ? 'st' : day === 2 || day === 22 ? 'nd' : day === 3 || day === 23 ? 'rd' : 'th';
+    const time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    return months[d.getMonth()] + ' ' + day + suffix + '<br>' + time;
+  }
+
+  function hideEmpty() {
+    if (emptyState) emptyState.style.display = 'none';
+  }
+  function showEmpty() {
+    if (emptyState) emptyState.style.display = 'block';
+  }
+
+  function initials(name) {
+    if (!name) return 'CS';
+    return name.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  }
+
+  function renderPost({ name, handle, body, time, avatar_url, is_business, role }) {
+    const article = document.createElement('article');
+    article.className = 'post';
+    const avatarHtml = avatar_url
+      ? `<img class="post-avatar" src="${escapeHtml(avatar_url)}" alt="">`
+      : `<div class="post-avatar" style="background:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:0.85rem;">${escapeHtml(initials(name))}</div>`;
+    const badges = is_business ? '<span class="badge badge-biz">BUSINESS</span>' : '<span class="badge badge-ok">HELPER</span>';
+    article.innerHTML = `
+      <div class="post-header">
+        ${avatarHtml}
+        <div class="post-meta">
+          <div class="post-name-row">
+            <span class="post-name">${escapeHtml(name || 'Member')}</span>
+            ${badges}
+            <span class="post-handle">@${escapeHtml(handle || 'user')}</span>
+          </div>
+          ${role ? `<div class="post-role">${escapeHtml(role)}</div>` : ''}
+        </div>
+        <span class="post-time">${time || 'Just now'}</span>
+      </div>
+      <div class="post-body"><p>${escapeHtml(body)}</p></div>
+      <div class="post-actions">
+        <button type="button" class="act-like">♡ 0</button>
+        <button type="button">💬 0</button>
+        <button type="button">↗ Share</button>
+        <button type="button">🔖</button>
+      </div>`;
+    postsList.appendChild(article);
+    hideEmpty();
+  }
+
+  async function loadAuth() {
+    const { data: { session } } = await supabase.auth.getSession();
+    currentUser = session?.user || null;
+    if (currentUser) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUser.id)
+        .maybeSingle();
+      currentProfile = profile;
+      if (navAvatar) {
+        const label = profile?.username || profile?.full_name || currentUser.email || 'CS';
+        navAvatar.textContent = initials(label);
+        navAvatar.title = profile?.full_name || profile?.username || currentUser.email;
+        navAvatar.href = profile?.is_business ? 'business-profile.html' : 'business-profile.html';
+      }
+    } else if (navAvatar) {
+      navAvatar.textContent = '?';
+      navAvatar.href = 'login.html';
+      navAvatar.title = 'Log in';
+    }
+  }
+
+  async function loadPosts() {
+    postsList.innerHTML = '';
+    const { data, error } = await supabase
+      .from('posts')
+      .select('id, body, created_at, user_id, profiles:user_id ( username, full_name, avatar_url, is_business )')
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    if (error) {
+      console.error(error);
+      // Fallback without join if FK not set
+      const { data: plain } = await supabase
+        .from('posts')
+        .select('id, body, created_at, user_id')
+        .order('created_at', { ascending: false })
+        .limit(50);
+      if (!plain || plain.length === 0) { showEmpty(); return; }
+      for (const p of plain) {
+        let name = 'Member', handle = 'member', avatar = null, isBiz = false;
+        const { data: prof } = await supabase.from('profiles').select('*').eq('id', p.user_id).maybeSingle();
+        if (prof) {
+          name = prof.full_name || prof.username || name;
+          handle = prof.username || handle;
+          avatar = prof.avatar_url;
+          isBiz = !!prof.is_business;
+        }
+        renderPost({ name, handle, body: p.body, time: formatTime(p.created_at), avatar_url: avatar, is_business: isBiz });
+      }
+      return;
+    }
+
+    if (!data || data.length === 0) { showEmpty(); return; }
+    data.forEach(p => {
+      const prof = p.profiles || {};
+      renderPost({
+        name: prof.full_name || prof.username || 'Member',
+        handle: prof.username || 'member',
+        body: p.body,
+        time: formatTime(p.created_at),
+        avatar_url: prof.avatar_url,
+        is_business: prof.is_business
+      });
+    });
+  }
 
   textarea.addEventListener('input', () => {
     const left = MAX - textarea.value.length;
-    charCount.textContent = left > 100 ? '1k' : left;
+    charCount.textContent = left > 100 ? '1k' : String(left);
     postBtn.disabled = textarea.value.trim().length === 0;
   });
 
   document.getElementById('focus-composer').addEventListener('click', () => {
+    if (!currentUser) {
+      window.location.href = 'login.html';
+      return;
+    }
     textarea.focus();
     document.getElementById('composer').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
@@ -731,57 +785,95 @@
     const text = textarea.value.trim();
     if (!text) return;
 
+    if (!currentUser) {
+      alert('Please log in to post.');
+      window.location.href = 'login.html';
+      return;
+    }
+
     postBtn.disabled = true;
     postBtn.textContent = 'POSTING…';
 
     try {
-      if (supabase) {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) throw new Error('Please log in to post.');
+      const { error } = await supabase.from('posts').insert({
+        user_id: currentUser.id,
+        body: text
+      });
+      if (error) throw error;
 
-        const { error } = await supabase.from('posts').insert({
-          user_id: user.id,
-          body: text
-        });
-        if (error) throw error;
-      }
-
-      // Optimistic UI – prepend a new post
-      const feed = document.querySelector('.feed');
+      // Prepend new post at top
+      const temp = document.createElement('div');
+      postsList.insertBefore(temp, postsList.firstChild);
+      const name = currentProfile?.full_name || currentProfile?.username || 'You';
+      const handle = currentProfile?.username || 'you';
       const article = document.createElement('article');
       article.className = 'post';
+      const av = currentProfile?.avatar_url
+        ? `<img class="post-avatar" src="${escapeHtml(currentProfile.avatar_url)}" alt="">`
+        : `<div class="post-avatar" style="background:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:0.85rem;">${escapeHtml(initials(name))}</div>`;
       article.innerHTML = `
         <div class="post-header">
-          <div class="post-avatar" style="background:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:0.85rem;">CS</div>
+          ${av}
           <div class="post-meta">
             <div class="post-name-row">
-              <span class="post-name">You</span>
-              <span class="post-handle">@you</span>
+              <span class="post-name">${escapeHtml(name)}</span>
+              ${currentProfile?.is_business ? '<span class="badge badge-biz">BUSINESS</span>' : '<span class="badge badge-ok">HELPER</span>'}
+              <span class="post-handle">@${escapeHtml(handle)}</span>
             </div>
           </div>
           <span class="post-time">Just now</span>
         </div>
         <div class="post-body"><p>${escapeHtml(text)}</p></div>
         <div class="post-actions">
-          <button>♡ 0</button>
-          <button>💬 0</button>
-          <button>↗ Share</button>
-          <button>🔖</button>
+          <button type="button">♡ 0</button>
+          <button type="button">💬 0</button>
+          <button type="button">↗ Share</button>
+          <button type="button">🔖</button>
         </div>`;
-      feed.insertBefore(article, feed.children[1]);
+      postsList.replaceChild(article, temp);
+      hideEmpty();
       textarea.value = '';
       postBtn.disabled = true;
       charCount.textContent = '1k';
     } catch (err) {
-      alert(err.message || 'Could not post.');
+      console.error(err);
+      alert(err.message || 'Could not post. Make sure you ran supabase-schema.sql.');
     } finally {
       postBtn.textContent = 'POST';
     }
   });
 
-  function escapeHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
+  // Realtime: new posts
+  supabase
+    .channel('posts-feed')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, async (payload) => {
+      if (payload.new.user_id === currentUser?.id) return; // already shown optimistically
+      const { data: prof } = await supabase.from('profiles').select('*').eq('id', payload.new.user_id).maybeSingle();
+      const article = document.createElement('article');
+      // reuse render by prepending
+      const holder = document.createElement('div');
+      postsList.insertBefore(holder, postsList.firstChild);
+      renderPost({
+        name: prof?.full_name || prof?.username || 'Member',
+        handle: prof?.username || 'member',
+        body: payload.new.body,
+        time: 'Just now',
+        avatar_url: prof?.avatar_url,
+        is_business: prof?.is_business
+      });
+      // move last rendered to top
+      const last = postsList.lastElementChild;
+      if (last && holder.parentNode) {
+        postsList.insertBefore(last, holder);
+        holder.remove();
+      }
+    })
+    .subscribe();
+
+  (async () => {
+    await loadAuth();
+    await loadPosts();
+  })();
 </script>
 </body>
 </html>

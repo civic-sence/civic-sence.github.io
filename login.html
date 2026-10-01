@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign Up — CIVICSENSE</title>
+<title>Login — CIVICSENSE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -11,12 +11,8 @@
 <style>
   :root {
     --purple: #6d42ed;
-    --purple-dark: #5a35d1;
     --yellow: #eee642;
-    --black: #0c0c0c;
     --dark: #121212;
-    --input-bg: #1a1a1a;
-    --border: #2a2a2a;
     --text: #ffffff;
     --muted: rgba(255,255,255,0.55);
     --green: #42ed91;
@@ -32,7 +28,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Subtle grid like the video */
   .page-bg {
     position: fixed;
     inset: 0;
@@ -44,7 +39,6 @@
     z-index: 0;
   }
 
-  /* ========== NAV (purple bar from video) ========== */
   .nav {
     position: sticky;
     top: 0;
@@ -57,9 +51,8 @@
   }
 
   .logo {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 800;
-    font-size: 1.25rem;
+    font-weight: 900;
+    font-size: 1.2rem;
     letter-spacing: -0.03em;
     color: #111;
     text-decoration: none;
@@ -106,51 +99,28 @@
     font-weight: 700;
   }
 
-  /* ========== MAIN ========== */
   .main {
     position: relative;
     z-index: 1;
-    max-width: 480px;
+    max-width: 420px;
     margin: 0 auto;
     padding: 60px 24px 80px;
   }
 
   .title {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 800;
-    font-size: clamp(3.2rem, 10vw, 4.8rem);
+    font-weight: 900;
+    font-size: clamp(2.8rem, 9vw, 4rem);
     letter-spacing: -0.04em;
     text-align: center;
     line-height: 0.95;
-    margin-bottom: 18px;
+    margin-bottom: 40px;
     text-transform: uppercase;
   }
 
-  .business-link {
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 36px;
-    letter-spacing: 0.02em;
-  }
-
-  .business-link a {
-    color: #fff;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  /* Form */
   form {
     display: flex;
     flex-direction: column;
     gap: 18px;
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
   }
 
   .field {
@@ -169,9 +139,7 @@
 
   label .req { color: #ff6b6b; }
 
-  .input-wrap {
-    position: relative;
-  }
+  .input-wrap { position: relative; }
 
   input {
     width: 100%;
@@ -179,7 +147,7 @@
     border: 1px solid #2a2a2a;
     border-radius: 10px;
     padding: 14px 16px;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: inherit;
     font-size: 0.9rem;
     color: #fff;
     outline: none;
@@ -208,18 +176,18 @@
 
   .icon-btn:hover { color: #fff; }
 
-  .legal {
-    font-size: 0.7rem;
-    color: var(--muted);
-    line-height: 1.5;
-    margin-top: 8px;
+  .forgot {
+    text-align: right;
+    margin-top: -8px;
   }
 
-  .legal a {
-    color: #fff;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+  .forgot a {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
   }
+
+  .forgot a:hover { color: #fff; text-decoration: underline; }
 
   .submit-btn {
     margin-top: 12px;
@@ -228,8 +196,8 @@
     color: #111;
     border: none;
     border-radius: 999px;
-    padding: 14px 32px;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 14px 40px;
+    font-family: inherit;
     font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -245,6 +213,20 @@
   .submit-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  .switch {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .switch a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .msg {
@@ -270,7 +252,6 @@
     border: 1px solid rgba(255,80,80,0.25);
   }
 
-  /* Footer teaser */
   .footer-teaser {
     margin-top: 80px;
     text-align: center;
@@ -278,16 +259,14 @@
   }
 
   .footer-teaser .eyebrow {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--muted);
     margin-bottom: 12px;
-    letter-spacing: 0.04em;
   }
 
   .footer-teaser .big-logo {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 800;
-    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 900;
+    font-size: clamp(2.8rem, 9vw, 4.5rem);
     letter-spacing: -0.04em;
     line-height: 1;
     margin-bottom: 16px;
@@ -295,8 +274,8 @@
 
   .footer-teaser p {
     color: var(--muted);
-    font-size: 0.9rem;
-    max-width: 320px;
+    font-size: 1rem;
+    max-width: 340px;
     margin: 0 auto 24px;
     line-height: 1.5;
   }
@@ -308,31 +287,26 @@
     padding: 10px 22px;
     border-radius: 999px;
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
   }
 
-  .footer-teaser .btn-outline:hover {
-    border-color: #fff;
-  }
+  .footer-teaser .btn-outline:hover { border-color: #fff; }
 
   @media (max-width: 640px) {
     .nav-links { display: none; }
-    .row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
   <div class="page-bg"></div>
 
-  <!-- NAV -->
   <nav class="nav">
     <a href="index.html" class="logo">CIVICSENSE</a>
     <ul class="nav-links">
       <li><a href="social.html">SOCIAL</a></li>
       <li><a href="index.html#gallery">GALLERY</a></li>
       <li><a href="index.html#directory">DIRECTORY</a></li>
-      <li><a href="index.html#stories">STORIES</a></li>
       <li><a href="index.html#pricing">PRICING</a></li>
     </ul>
     <div class="nav-actions">
@@ -341,89 +315,61 @@
     </div>
   </nav>
 
-  <!-- FORM -->
   <main class="main">
-    <h1 class="title">SIGN UP</h1>
-    <p class="business-link">
-      CREATING A TEAM / NONPROFIT ACCOUNT?
-      <a href="business-signup.html">CLICK HERE!</a>
-    </p>
+    <h1 class="title">LOG IN</h1>
 
-    <form id="signup-form">
-      <div class="row">
-        <div class="field">
-          <label>FIRST NAME <span class="req">*</span></label>
-          <input type="text" name="first_name" required autocomplete="given-name" placeholder="">
-        </div>
-        <div class="field">
-          <label>LAST NAME <span class="req">*</span></label>
-          <input type="text" name="last_name" required autocomplete="family-name" placeholder="">
-        </div>
-      </div>
-
+    <form id="login-form">
       <div class="field">
         <label>EMAIL <span class="req">*</span></label>
         <input type="email" name="email" required autocomplete="email" placeholder="">
       </div>
 
       <div class="field">
-        <label>USERNAME <span class="req">*</span></label>
-        <div class="input-wrap">
-          <input type="text" name="username" required autocomplete="username" pattern="[a-zA-Z0-9_]{3,24}" title="3-24 letters, numbers or underscore" placeholder="">
-          <button type="button" class="icon-btn" title="Username must be unique">?</button>
-        </div>
-      </div>
-
-      <div class="field">
         <label>PASSWORD <span class="req">*</span></label>
         <div class="input-wrap">
-          <input type="password" name="password" id="password" required minlength="8" autocomplete="new-password" placeholder="">
+          <input type="password" name="password" id="password" required minlength="6" autocomplete="current-password" placeholder="">
           <button type="button" class="icon-btn" id="toggle-pass" title="Show password">👁</button>
         </div>
       </div>
 
-      <div class="field">
-        <label>CONFIRM PASSWORD <span class="req">*</span></label>
-        <input type="password" name="confirm_password" id="confirm" required minlength="8" autocomplete="new-password" placeholder="">
+      <div class="forgot">
+        <a href="#" id="forgot-link">Forgot password?</a>
       </div>
 
-      <p class="legal">
-        By clicking “Submit”, you acknowledge that you have read and understood,
-        and agree to CivicSense’s
-        <a href="#">Privacy Policy</a> and
-        <a href="#">Terms &amp; Conditions</a>.
-      </p>
-
-      <button type="submit" class="submit-btn" id="submit-btn">SUBMIT →</button>
+      <button type="submit" class="submit-btn" id="submit-btn">LOG IN →</button>
     </form>
 
     <div id="msg" class="msg"></div>
+
+    <p class="switch">
+      Don’t have an account?
+      <a href="signup.html">Sign up</a>
+      ·
+      <a href="business-signup.html">Business sign up</a>
+    </p>
   </main>
 
-  <!-- Bottom teaser (from video) -->
   <div class="footer-teaser">
-    <p class="eyebrow">A SOCIAL NETWORK FOR EVERYDAY GOOD</p>
+    <p class="eyebrow">A Social Network for Everyday Good</p>
     <div class="big-logo">CIVICSENSE</div>
     <p>Join for free and hang with people who do good on the internet.</p>
-    <a href="index.html" class="btn-outline">Make Your Profile ↑</a>
+    <a href="signup.html" class="btn-outline">Make Your Profile ↑</a>
   </div>
 
 <script>
   // ========== SUPABASE CONFIG ==========
-  // Replace these with your own project values from https://supabase.com/dashboard
+  // Replace with your project values from https://supabase.com/dashboard → Project Settings → API
   const SUPABASE_URL = 'https://upmlijvwbzctaglsrcfu.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwbWxpanZ3YnpjdGFnbHNyY2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4MjA1NDcsImV4cCI6MjEwNjM5NjU0N30.-hIK_WXzbbW55WQ5KrWZPiHRQwhpE9850VCHbmr8PcM';
 
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Toggle password visibility
   document.getElementById('toggle-pass').addEventListener('click', () => {
     const input = document.getElementById('password');
     input.type = input.type === 'password' ? 'text' : 'password';
   });
 
-  // Form submit
-  const form = document.getElementById('signup-form');
+  const form = document.getElementById('login-form');
   const msgEl = document.getElementById('msg');
   const btn = document.getElementById('submit-btn');
 
@@ -433,72 +379,44 @@
     msgEl.textContent = '';
 
     const fd = new FormData(form);
-    const first_name = fd.get('first_name').trim();
-    const last_name  = fd.get('last_name').trim();
-    const email      = fd.get('email').trim();
-    const username   = fd.get('username').trim().toLowerCase();
-    const password   = fd.get('password');
-    const confirm    = fd.get('confirm_password');
-
-    if (password !== confirm) {
-      showError('Passwords do not match.');
-      return;
-    }
-
-    if (password.length < 8) {
-      showError('Password must be at least 8 characters.');
-      return;
-    }
+    const email = fd.get('email').trim();
+    const password = fd.get('password');
 
     btn.disabled = true;
-    btn.textContent = 'CREATING…';
+    btn.textContent = 'LOGGING IN…';
 
     try {
-      // 1. Create auth user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name,
-            last_name,
-            username,
-            full_name: `${first_name} ${last_name}`
-          }
-        }
-      });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
 
-      if (authError) throw authError;
-
-      // 2. Profile row is created automatically by the trigger (see SQL below)
-      //    Optional: explicit upsert if you want to be extra safe
-      if (authData.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: authData.user.id,
-            username,
-            first_name,
-            last_name,
-            full_name: `${first_name} ${last_name}`,
-            updated_at: new Date().toISOString()
-          });
-
-        // Ignore unique violation if trigger already created it
-        if (profileError && !profileError.message.includes('duplicate')) {
-          console.warn('Profile upsert warning:', profileError);
-        }
-      }
-
-      showSuccess('Account created! Redirecting to login…');
-      form.reset();
-      setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+      showSuccess('Welcome back! Redirecting…');
+      setTimeout(() => {
+        window.location.href = 'social.html';
+      }, 800);
     } catch (err) {
       console.error(err);
-      showError(err.message || 'Something went wrong. Please try again.');
+      showError(err.message || 'Login failed. Check your email and password.');
     } finally {
       btn.disabled = false;
-      btn.textContent = 'SUBMIT →';
+      btn.textContent = 'LOG IN →';
+    }
+  });
+
+  document.getElementById('forgot-link').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = form.elements.email.value.trim();
+    if (!email) {
+      showError('Enter your email above, then click Forgot password.');
+      return;
+    }
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/login.html'
+      });
+      if (error) throw error;
+      showSuccess('Password reset email sent. Check your inbox.');
+    } catch (err) {
+      showError(err.message || 'Could not send reset email.');
     }
   });
 

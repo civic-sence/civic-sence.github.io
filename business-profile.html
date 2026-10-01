@@ -533,7 +533,7 @@
   <nav class="nav">
     <a href="index.html" class="logo">CIVICSENSE</a>
     <ul class="nav-links">
-      <li><a href="index.html#feed">SOCIAL</a></li>
+      <li><a href="social.html">SOCIAL</a></li>
       <li><a href="index.html#gallery">GALLERY</a></li>
       <li><a href="index.html#directory">DIRECTORY</a></li>
       <li><a href="#">STORIES</a></li>
@@ -789,7 +789,7 @@
     <a href="index.html" class="btn-share">Share Your Work ↑</a>
     <div class="footer-links">
       <a href="index.html">Home</a>
-      <a href="index.html#feed">Social</a>
+      <a href="social.html">Social</a>
       <a href="index.html#gallery">Gallery</a>
       <a href="index.html#directory">Directory</a>
       <a href="#">Stories</a>
@@ -849,7 +849,10 @@
   // Load existing profile if logged in
   async function loadProfile() {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      window.location.href = 'login.html';
+      return;
+    }
 
     const { data: profile } = await supabase
       .from('profiles')
