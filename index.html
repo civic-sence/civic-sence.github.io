@@ -270,18 +270,11 @@
     transform: translateY(0);
   }
 
-  /* Card positions */
-  .fc-1 { width: 200px; height: 240px; top: 12%; left: 6%; }
-  .fc-2 { width: 130px; height: 130px; top: 38%; left: 4%; }
-  .fc-3 { width: 110px; height: 110px; top: 58%; left: 12%; }
-  .fc-4 { width: 90px; height: 90px; top: 68%; left: 22%; }
-  .fc-5 { width: 140px; height: 100px; top: 78%; left: 8%; }
-  .fc-6 { width: 120px; height: 120px; top: 14%; right: 8%; }
-  .fc-7 { width: 160px; height: 120px; top: 28%; right: 14%; }
-  .fc-8 { width: 150px; height: 150px; top: 42%; right: 5%; }
-  .fc-9 { width: 140px; height: 110px; top: 58%; right: 12%; }
-  .fc-10 { width: 130px; height: 130px; top: 72%; right: 22%; }
-  .fc-11 { width: 180px; height: 130px; top: 78%; right: 4%; }
+  /* Card positions — only 4 unique images */
+  .fc-1 { width: 210px; height: 260px; top: 14%; left: 5%; }
+  .fc-2 { width: 150px; height: 150px; top: 58%; left: 10%; }
+  .fc-3 { width: 170px; height: 170px; top: 16%; right: 6%; }
+  .fc-4 { width: 190px; height: 150px; top: 55%; right: 8%; }
 
   /* Marquee */
   .marquee-wrap {
@@ -907,12 +900,13 @@
     .social-section { grid-template-columns: 1fr; }
     .make-grid { grid-template-columns: 1fr; }
     .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
-    .fc-1, .fc-5, .fc-11 { display: none; }
+    .fc-2, .fc-4 { display: none; }
   }
 
   @media (max-width: 600px) {
-    .float-card { transform: scale(0.75); }
-    .fc-2, .fc-3, .fc-4, .fc-7, .fc-9, .fc-10 { display: none; }
+    .float-card { transform: scale(0.8); }
+    .fc-1 { top: 18%; left: 4%; width: 140px; height: 170px; }
+    .fc-3 { top: 20%; right: 4%; width: 120px; height: 120px; }
   }
 
   /* Subtle float animation */
@@ -925,16 +919,9 @@
     animation: float 6s ease-in-out infinite;
   }
   .fc-1 { animation-delay: 0s; }
-  .fc-2 { animation-delay: 0.8s; }
-  .fc-3 { animation-delay: 1.6s; }
-  .fc-4 { animation-delay: 0.4s; }
-  .fc-5 { animation-delay: 1.2s; }
-  .fc-6 { animation-delay: 0.6s; }
-  .fc-7 { animation-delay: 1.4s; }
-  .fc-8 { animation-delay: 0.2s; }
-  .fc-9 { animation-delay: 1.8s; }
-  .fc-10 { animation-delay: 1s; }
-  .fc-11 { animation-delay: 0.5s; }
+  .fc-2 { animation-delay: 1.2s; }
+  .fc-3 { animation-delay: 0.6s; }
+  .fc-4 { animation-delay: 1.8s; }
 </style>
 </head>
 <body>
@@ -959,50 +946,22 @@
 <header class="hero">
   <div class="hero-grid"></div>
 
-  <!-- Floating cards (good deeds imagery) -->
+  <!-- Floating cards — only 4 unique images -->
   <div class="float-card fc-1">
-    <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&h=500&fit=crop" alt="Helping hands">
+    <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=420&h=520&fit=crop" alt="Helping hands">
     <span class="label">Maya Chen</span>
   </div>
   <div class="float-card fc-2">
     <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=300&h=300&fit=crop" alt="Volunteer">
-    <span class="label">Aaradhya Singh</span>
+    <span class="label">Jordan Lee</span>
   </div>
   <div class="float-card fc-3">
-    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=250&h=250&fit=crop" alt="Community">
+    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=340&h=340&fit=crop" alt="Community">
     <span class="label">Aisha Patel</span>
   </div>
   <div class="float-card fc-4">
-    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=200&h=200&fit=crop" alt="Food drive">
+    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=380&h=300&fit=crop" alt="Food drive">
     <span class="label">Sam Rivera</span>
-  </div>
-  <div class="float-card fc-5">
-    <img src="https://images.unsplash.com/photo-1532629346104-6c61df2619f4?w=300&h=220&fit=crop" alt="Donation">
-    <span class="label">Elena Voss</span>
-  </div>
-  <div class="float-card fc-6">
-    <img src="https://images.unsplash.com/photo-1509099863731-ef4b655a1545?w=280&h=280&fit=crop" alt="Teaching">
-    <span class="label">Chris Okonkwo</span>
-  </div>
-  <div class="float-card fc-7">
-    <img src="https://images.unsplash.com/photo-1579208575657-c595a90a7a82?w=320&h=240&fit=crop" alt="Cleanup">
-    <span class="label">Priya Singh</span>
-  </div>
-  <div class="float-card fc-8">
-    <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=300&h=300&fit=crop&sat=-20" alt="Mentoring">
-    <span class="label">Marcus Cole</span>
-  </div>
-  <div class="float-card fc-9">
-    <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=280&h=220&fit=crop&sat=-30" alt="Care">
-    <span class="label">Sofia Alvarez</span>
-  </div>
-  <div class="float-card fc-10">
-    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=260&h=260&fit=crop&sat=-40" alt="Team">
-    <span class="label">Daniel Kim</span>
-  </div>
-  <div class="float-card fc-11">
-    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=360&h=260&fit=crop" alt="Community event">
-    <span class="label">Visual Kindness '26</span>
   </div>
 
   <div class="hero-content">
@@ -1075,11 +1034,11 @@
       <div class="info">
         <img class="avatar-lg" src="https://strong-neglected-websites--shauryachr.replit.app/assets/shaurya_(1)_1788520580506-BgVWvDqM.jpg" alt="">
         <h3>Shaurya Chauhan</h3>
-        <p class="role">Chief Executive Officer</p>
+        <p class="role">Community Builder · Brussels, BE</p>
         <div class="stats">
-          <div><strong>10</strong> Deeds</div>
-          <div><strong>1k</strong> Views</div>
-          <div><strong>60</strong> Likes</div>
+          <div><strong>16</strong> Deeds</div>
+          <div><strong>1.2k</strong> Views</div>
+          <div><strong>87</strong> Likes</div>
         </div>
       </div>
     </div>
