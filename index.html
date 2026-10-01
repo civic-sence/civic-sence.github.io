@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIVICSENSE — A Social Network for Good Deeds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #42ed91;
+    --green-dark: #2bc97a;
+    --yellow: #eee642;
+    --purple: #6d42ed;
+    --black: #0c0c0c;
+    --dark: #121212;
+    --gray: #1a1a1a;
+    --white: #ffffff;
+    --text-muted: rgba(255,255,255,0.65);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== NAV ========== */
+  .nav {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 1200px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px 10px 20px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 999px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.12);
+  }
+
+  .logo {
+    font-weight: 900;
+    font-size: 1.35rem;
+    letter-spacing: -0.03em;
+    color: #111;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .logo span {
+    background: var(--yellow);
+    color: #111;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 0.95em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: #000;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-dark {
+    background: #111;
+    color: #fff;
+  }
+
+  .btn-dark:hover {
+    background: #000;
+    transform: translateY(-1px);
+  }
+
+  .btn-green {
+    background: var(--green);
+    color: #111;
+  }
+
+  .btn-green:hover {
+    background: var(--green-dark);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: #111;
+    border: 1.5px solid #ddd;
+  }
+
+  .btn-outline:hover {
+    border-color: #111;
+  }
+
+  .avatar-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: #111;
+    cursor: pointer;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    background: var(--green);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 24px 80px;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 780px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.55);
+    margin-bottom: 18px;
+  }
+
+  .hero-title {
+    font-size: clamp(3.2rem, 9vw, 6.5rem);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: #111;
+    margin-bottom: 8px;
+  }
+
+  .hero-title .highlight {
+    display: inline-block;
+    background: #111;
+    color: #fff;
+    padding: 0.05em 0.22em 0.12em;
+    border-radius: 12px;
+    margin-top: 4px;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.2vw, 1.25rem);
+    color: rgba(0,0,0,0.65);
+    max-width: 420px;
+    margin: 28px auto 36px;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  /* Floating cards */
+  .float-card {
+    position: absolute;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s;
+    cursor: pointer;
+    z-index: 5;
+  }
+
+  .float-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .float-card:hover {
+    transform: scale(1.06) !important;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+    z-index: 20;
+  }
+
+  .float-card .label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+  }
+
+  .float-card:hover .label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Card positions */
+  .fc-1 { width: 200px; height: 240px; top: 12%; left: 6%; }
+  .fc-2 { width: 130px; height: 130px; top: 38%; left: 4%; }
+  .fc-3 { width: 110px; height: 110px; top: 58%; left: 12%; }
+  .fc-4 { width: 90px; height: 90px; top: 68%; left: 22%; }
+  .fc-5 { width: 140px; height: 100px; top: 78%; left: 8%; }
+  .fc-6 { width: 120px; height: 120px; top: 14%; right: 8%; }
+  .fc-7 { width: 160px; height: 120px; top: 28%; right: 14%; }
+  .fc-8 { width: 150px; height: 150px; top: 42%; right: 5%; }
+  .fc-9 { width: 140px; height: 110px; top: 58%; right: 12%; }
+  .fc-10 { width: 130px; height: 130px; top: 72%; right: 22%; }
+  .fc-11 { width: 180px; height: 130px; top: 78%; right: 4%; }
+
+  /* Marquee */
+  .marquee-wrap {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 56px;
+    background: #111;
+    overflow: hidden;
+    z-index: 15;
+  }
+
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+    height: 100%;
+    align-items: center;
+  }
+
+  .marquee span {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #fff;
+    padding: 0 28px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .marquee .dot {
+    width: 10px;
+    height: 10px;
+    background: var(--green);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ========== SECTION COMMON ========== */
+  section {
+    position: relative;
+    padding: 100px 24px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    line-height: 1.55;
+  }
+
+  /* ========== COME FOR THE WORK ========== */
+  .come-section {
+    background: var(--dark);
+    text-align: center;
+    padding: 120px 24px;
+  }
+
+  .come-section h2 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .come-section p {
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    margin-bottom: 32px;
+  }
+
+  /* ========== SOCIAL FEED SECTION ========== */
+  .social-section {
+    background: var(--purple);
+    padding: 100px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 0;
+  }
+
+  .social-section .left h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .social-section .left h2 span {
+    color: var(--yellow);
+  }
+
+  .social-section .left p {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .feature-list {
+    list-style: none;
+    margin-top: 28px;
+  }
+
+  .feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .feature-list .num {
+    background: rgba(0,0,0,0.25);
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .post-mock {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    color: #111;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  }
+
+  .post-mock .post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .post-mock .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #eee;
+    object-fit: cover;
+  }
+
+  .post-mock .name {
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .post-mock .handle {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .post-mock .body {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .post-mock .actions {
+    display: flex;
+    gap: 16px;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  /* ========== MAKE IT YOURS ========== */
+  .make-section {
+    background: var(--dark);
+    padding: 120px 24px;
+  }
+
+  .make-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .profile-card {
+    background: #1c1c1c;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #2a2a2a;
+  }
+
+  .profile-card .cover {
+    height: 120px;
+    background: linear-gradient(135deg, #42ed91, #6d42ed);
+  }
+
+  .profile-card .info {
+    padding: 0 24px 24px;
+    margin-top: -40px;
+  }
+
+  .profile-card .avatar-lg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid #1c1c1c;
+    object-fit: cover;
+    background: #333;
+  }
+
+  .profile-card h3 {
+    font-size: 1.3rem;
+    margin: 12px 0 4px;
+  }
+
+  .profile-card .role {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+
+  .profile-card .stats {
+    display: flex;
+    gap: 24px;
+    font-size: 0.85rem;
+  }
+
+  .profile-card .stats strong {
+    display: block;
+    font-size: 1.1rem;
+  }
+
+  /* ========== SEE WHAT PEOPLE ARE MAKING ========== */
+  .gallery-section {
+    background: var(--dark);
+    padding: 80px 24px 120px;
+  }
+
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .gallery-card {
+    background: #1a1a1a;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #2a2a2a;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .gallery-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+  }
+
+  .gallery-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .gallery-card .meta {
+    padding: 14px 16px;
+  }
+
+  .gallery-card .meta h4 {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .gallery-card .meta span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* ========== DIRECTORY ========== */
+  .directory-section {
+    background: #0a0a0a;
+    padding: 100px 24px;
+  }
+
+  .people-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 420px;
+    margin-left: auto;
+  }
+
+  .person-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #1a1a1a;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid #2a2a2a;
+    transition: transform 0.25s;
+  }
+
+  .person-card:hover {
+    transform: translateX(-8px);
+  }
+
+  .person-card img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .person-card .name {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .person-card .title {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--green);
+    color: #111;
+    margin-left: 6px;
+  }
+
+  /* ========== BRING THE WHOLE STUDIO ========== */
+  .studio-section {
+    background: #f5f5f5;
+    color: #111;
+    padding: 100px 24px;
+  }
+
+  .studio-section .section-sub {
+    color: #555;
+  }
+
+  .logo-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .logo-item {
+    width: 70px;
+    height: 70px;
+    background: #fff;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    transition: transform 0.25s;
+  }
+
+  .logo-item:hover {
+    transform: scale(1.08);
+  }
+
+  /* ========== TESTIMONIAL ========== */
+  .testimonial-section {
+    background: var(--yellow);
+    color: #111;
+    text-align: center;
+    padding: 100px 24px;
+  }
+
+  .testimonial-section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    margin-bottom: 32px;
+  }
+
+  .quote {
+    font-size: 1.25rem;
+    max-width: 560px;
+    margin: 0 auto 24px;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  .quote-author {
+    font-weight: 700;
+    margin-top: 20px;
+  }
+
+  .quote-role {
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  /* ========== PRICING ========== */
+  .pricing-section {
+    background: var(--dark);
+    padding: 100px 24px;
+    text-align: center;
+  }
+
+  .pricing-section h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .pricing-section > p {
+    color: var(--text-muted);
+    margin-bottom: 48px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .price-card {
+    border-radius: 20px;
+    padding: 32px 28px;
+    text-align: left;
+    border: 1px solid #2a2a2a;
+  }
+
+  .price-card.free {
+    background: #1a1a1a;
+  }
+
+  .price-card.pro {
+    background: var(--purple);
+    border-color: transparent;
+  }
+
+  .price-card.lifetime {
+    background: var(--yellow);
+    color: #111;
+    border-color: transparent;
+  }
+
+  .price-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .price-card .price {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .price-card .price span {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .price-card .desc {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 24px;
+    line-height: 1.45;
+  }
+
+  .price-card ul {
+    list-style: none;
+    margin-bottom: 28px;
+  }
+
+  .price-card li {
+    font-size: 0.9rem;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .price-card li::before {
+    content: "✓";
+    font-weight: 700;
+  }
+
+  .price-card .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ========== FAQ ========== */
+  .faq-section {
+    background: var(--dark);
+    padding: 60px 24px 100px;
+  }
+
+  .faq-item {
+    max-width: 640px;
+    margin: 0 auto;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 18px 0;
+  }
+
+  .faq-item summary {
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item p {
+    margin-top: 12px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    background: #0a0a0a;
+    padding: 80px 24px 40px;
+    text-align: center;
+  }
+
+  .footer h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    margin-bottom: 28px;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px 32px;
+    margin: 40px 0 24px;
+    font-size: 0.9rem;
+  }
+
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    color: #fff;
+  }
+
+  .footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .footer-social a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: #555;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .social-section { grid-template-columns: 1fr; }
+    .make-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
+    .fc-1, .fc-5, .fc-11 { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .float-card { transform: scale(0.75); }
+    .fc-2, .fc-3, .fc-4, .fc-7, .fc-9, .fc-10 { display: none; }
+  }
+
+  /* Subtle float animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .float-card {
+    animation: float 6s ease-in-out infinite;
+  }
+  .fc-1 { animation-delay: 0s; }
+  .fc-2 { animation-delay: 0.8s; }
+  .fc-3 { animation-delay: 1.6s; }
+  .fc-4 { animation-delay: 0.4s; }
+  .fc-5 { animation-delay: 1.2s; }
+  .fc-6 { animation-delay: 0.6s; }
+  .fc-7 { animation-delay: 1.4s; }
+  .fc-8 { animation-delay: 0.2s; }
+  .fc-9 { animation-delay: 1.8s; }
+  .fc-10 { animation-delay: 1s; }
+  .fc-11 { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="logo">CIVIC<span>SENSE</span></a>
+  <ul class="nav-links">
+    <li><a href="#feed">FEED</a></li>
+    <li><a href="#gallery">GALLERY</a></li>
+    <li><a href="#directory">DIRECTORY</a></li>
+    <li><a href="#stories">STORIES</a></li>
+    <li><a href="#pricing">PRICING</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="#" class="btn btn-outline" style="padding:8px 14px;">LOGIN</a>
+    <a href="#" class="btn btn-dark">SIGN UP →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-grid"></div>
+
+  <!-- Floating cards (good deeds imagery) -->
+  <div class="float-card fc-1">
+    <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&h=500&fit=crop" alt="Helping hands">
+    <span class="label">Maya Chen</span>
+  </div>
+  <div class="float-card fc-2">
+    <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=300&h=300&fit=crop" alt="Volunteer">
+    <span class="label">Jordan Lee</span>
+  </div>
+  <div class="float-card fc-3">
+    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=250&h=250&fit=crop" alt="Community">
+    <span class="label">Aisha Patel</span>
+  </div>
+  <div class="float-card fc-4">
+    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=200&h=200&fit=crop" alt="Food drive">
+    <span class="label">Sam Rivera</span>
+  </div>
+  <div class="float-card fc-5">
+    <img src="https://images.unsplash.com/photo-1532629346104-6c61df2619f4?w=300&h=220&fit=crop" alt="Donation">
+    <span class="label">Elena Voss</span>
+  </div>
+  <div class="float-card fc-6">
+    <img src="https://images.unsplash.com/photo-1509099863731-ef4b655a1545?w=280&h=280&fit=crop" alt="Teaching">
+    <span class="label">Chris Okonkwo</span>
+  </div>
+  <div class="float-card fc-7">
+    <img src="https://images.unsplash.com/photo-1579208575657-c595a90a7a82?w=320&h=240&fit=crop" alt="Cleanup">
+    <span class="label">Priya Singh</span>
+  </div>
+  <div class="float-card fc-8">
+    <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=300&h=300&fit=crop&sat=-20" alt="Mentoring">
+    <span class="label">Marcus Cole</span>
+  </div>
+  <div class="float-card fc-9">
+    <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=280&h=220&fit=crop&sat=-30" alt="Care">
+    <span class="label">Sofia Alvarez</span>
+  </div>
+  <div class="float-card fc-10">
+    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=260&h=260&fit=crop&sat=-40" alt="Team">
+    <span class="label">Daniel Kim</span>
+  </div>
+  <div class="float-card fc-11">
+    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=360&h=260&fit=crop" alt="Community event">
+    <span class="label">Visual Kindness '26</span>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">A SOCIAL NETWORK FOR EVERYDAY GOOD</p>
+    <h1 class="hero-title">
+      Helpers<br>
+      Citizens<br>
+      <span class="highlight">Builders</span>
+    </h1>
+    <p class="hero-sub">Share the good you did today, find your people, and let kindness speak for itself.</p>
+    <a href="#gallery" class="btn btn-dark" style="padding:14px 28px; font-size:0.95rem;">VIEW FEED →</a>
+  </div>
+
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span>HELPERS <i class="dot"></i> CITIZENS <i class="dot"></i> BUILDERS <i class="dot"></i> VOLUNTEERS <i class="dot"></i> NEIGHBORS <i class="dot"></i> DOERS <i class="dot"></i> HELPERS <i class="dot"></i> CITIZENS <i class="dot"></i> BUILDERS <i class="dot"></i> VOLUNTEERS <i class="dot"></i> NEIGHBORS <i class="dot"></i> DOERS <i class="dot"></i></span>
+      <span>HELPERS <i class="dot"></i> CITIZENS <i class="dot"></i> BUILDERS <i class="dot"></i> VOLUNTEERS <i class="dot"></i> NEIGHBORS <i class="dot"></i> DOERS <i class="dot"></i> HELPERS <i class="dot"></i> CITIZENS <i class="dot"></i> BUILDERS <i class="dot"></i> VOLUNTEERS <i class="dot"></i> NEIGHBORS <i class="dot"></i> DOERS <i class="dot"></i></span>
+    </div>
+  </div>
+</header>
+
+<!-- COME FOR THE WORK -->
+<section class="come-section">
+  <h2>Come for the good.</h2>
+  <p>Stay for the people who made it happen.</p>
+  <a href="#gallery" class="btn btn-green">VIEW FEED →</a>
+</section>
+
+<!-- SOCIAL FEED -->
+<section class="social-section" id="feed">
+  <div class="left">
+    <h2>A social feed that doesn’t <span>manipulate</span> you.</h2>
+    <p>Posts in order from the people you actually follow. Kindness and all. It’s social without the reach games.</p>
+    <p style="font-weight:600; margin-bottom:8px;">No ads. No ranking. No BS.</p>
+    <ul class="feature-list">
+      <li><span class="num">01</span> Deeds belong in the post</li>
+      <li><span class="num">02</span> Context without a twelve-part thread</li>
+      <li><span class="num">03</span> Share the process, not the performance</li>
+    </ul>
+  </div>
+  <div class="right">
+    <div class="post-mock">
+      <div class="post-header">
+        <img class="avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="">
+        <div>
+          <div class="name">Aisha Patel</div>
+          <div class="handle">@aisha · 2h</div>
+        </div>
+      </div>
+      <div class="body">Helped an elderly neighbor carry groceries up three flights of stairs today. She made me tea and told me stories about the neighborhood in the 70s. Best hour of my week.</div>
+      <div class="actions">
+        <span>♥ 48</span>
+        <span>💬 12</span>
+        <span>↗ Share</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAKE IT YOURS -->
+<section class="make-section">
+  <div class="container make-grid">
+    <div>
+      <h2 class="section-title">Make it yours.</h2>
+      <p class="section-sub">A profile, deed log, and social feed in one place. Share your latest acts of kindness, behind-the-scenes moments, and the ideas taking shape in your community.</p>
+      <a href="#" class="btn btn-green" style="margin-top:28px;">JOIN CIVIC SENSE →</a>
+    </div>
+    <div class="profile-card">
+      <div class="cover"></div>
+      <div class="info">
+        <img class="avatar-lg" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop" alt="">
+        <h3>Quentin Hocdé</h3>
+        <p class="role">Community Builder · Brussels, BE</p>
+        <div class="stats">
+          <div><strong>16</strong> Deeds</div>
+          <div><strong>1.2k</strong> Views</div>
+          <div><strong>87</strong> Likes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-header">
+    <h2 class="section-title">See what people are doing.</h2>
+    <p class="section-sub" style="margin:0 auto;">Browse real good deeds from neighbors, volunteers, and everyday heroes. Filter by city, cause, or type — then connect with the people behind the work.</p>
+  </div>
+  <div class="container gallery-grid">
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=500&h=360&fit=crop" alt="">
+      <div class="meta">
+        <h4>Neighborhood Clean-up</h4>
+        <span>Maya Chen · Community</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&h=360&fit=crop" alt="">
+      <div class="meta">
+        <h4>Food Bank Volunteer</h4>
+        <span>Jordan Lee · Hunger Relief</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=500&h=360&fit=crop" alt="">
+      <div class="meta">
+        <h4>Mentoring Teens</h4>
+        <span>Priya Singh · Education</span>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=500&h=360&fit=crop" alt="">
+      <div class="meta">
+        <h4>Beach Cleanup Crew</h4>
+        <span>Sam Rivera · Environment</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTORY -->
+<section class="directory-section" id="directory">
+  <div class="container" style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;">
+    <div>
+      <h2 class="section-title">Find the right people.</h2>
+      <p class="section-sub">Explore the directory and connect with people who fit what you’re looking for — from future collaborators and volunteers to everyday citizens whose kindness inspires you.</p>
+    </div>
+    <div class="people-stack">
+      <div class="person-card">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" alt="">
+        <div>
+          <div class="name">Mathis Humbert <span class="badge">OKAY</span></div>
+          <div class="title">Freelance Community Organizer</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="">
+        <div>
+          <div class="name">Ross Anderson <span class="badge">PRO</span></div>
+          <div class="title">Creative Director, off brand.</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" alt="">
+        <div>
+          <div class="name">Jonathan Morin</div>
+          <div class="title">Designer & Webflow Developer</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop" alt="">
+        <div>
+          <div class="name">Clément Renou</div>
+          <div class="title">Volunteer Coordinator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO / TEAMS -->
+<section class="studio-section">
+  <div class="container" style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;">
+    <div>
+      <h2 class="section-title">Bring the whole crew.</h2>
+      <p class="section-sub">Create a space for the work, your people, and everything you build together. With Business PRO, create a team, credit collaborators on projects, and let them feature the deeds in their profiles too.</p>
+      <a href="#" class="btn btn-dark" style="margin-top:28px;">CREATE A TEAM PROFILE →</a>
+    </div>
+    <div class="logo-cloud">
+      <div class="logo-item" style="background:#6d42ed;color:#fff;">TJ</div>
+      <div class="logo-item">IGO</div>
+      <div class="logo-item" style="background:#42ed91;">VH</div>
+      <div class="logo-item">SAN</div>
+      <div class="logo-item" style="background:#111;color:#fff;">35</div>
+      <div class="logo-item">good</div>
+      <div class="logo-item" style="background:#ed9442;color:#fff;">GC</div>
+      <div class="logo-item">Other</div>
+      <div class="logo-item" style="background:#ec4242;color:#fff;">=</div>
+      <div class="logo-item">COMMUNE</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-section" id="stories">
+  <h2>Don’t take our word for it.<br>Take theirs. It’s pretty okay.</h2>
+  <p class="quote">“The CivicSense community has always been there to support us, answer our questions, and help us build real connections around everyday kindness.”</p>
+  <div class="quote-author">Mees Rutten</div>
+  <div class="quote-role">Founder & Community Lead · Merlin Collective</div>
+  <a href="#" class="btn btn-dark" style="margin-top:28px;">READ THEIR STORY →</a>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <h2>Join for free. Go further when you’re ready.</h2>
+  <p>Build your profile, share your deeds, and join the CivicSense feed for free. Upgrade when you want more room to grow and help support the community.</p>
+  <div class="pricing-grid">
+    <div class="price-card free">
+      <h3>FREE</h3>
+      <div class="price">Free</div>
+      <p class="desc">Create your profile, share up to six deeds, and join the conversation.</p>
+      <ul>
+        <li>User Profile</li>
+        <li>Deed Log</li>
+        <li>Up to 6 Posts</li>
+        <li>Access the Civic Feed</li>
+      </ul>
+      <a href="#" class="btn btn-outline" style="color:#fff;border-color:#444;">VIEW PLANS</a>
+    </div>
+    <div class="price-card pro">
+      <h3>PRO</h3>
+      <div class="price">$9 <span>/monthly</span></div>
+      <p class="desc">Build out your log, get discovered in the directory, and show more of what you do.</p>
+      <ul>
+        <li>“PRO” badge</li>
+        <li>Unlimited deeds</li>
+        <li>Gallery inclusion</li>
+        <li>Directory listing</li>
+        <li>Impact story builder</li>
+        <li>Set availability</li>
+      </ul>
+      <a href="#" class="btn" style="background:#fff;color:#6d42ed;">GO PRO</a>
+    </div>
+    <div class="price-card lifetime">
+      <h3>LIFETIME</h3>
+      <div class="price">$249 <span>one-time</span></div>
+      <p class="desc">Everything in PRO, one payment, yours for life.</p>
+      <ul>
+        <li>Access for life</li>
+        <li>Immediate access to new features</li>
+        <li>“LIFETIME” profile badge</li>
+        <li>Premium Support</li>
+      </ul>
+      <a href="#" class="btn btn-dark">CLAIM A SEAT</a>
+    </div>
+  </div>
+  <p style="margin-top:32px; font-size:0.9rem; color:var(--text-muted);">Building as a collective or nonprofit? <a href="#" style="color:var(--green);">Team plans start at $18/month</a></p>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <details class="faq-item">
+      <summary>What do I get with a free account? <span>+</span></summary>
+      <p>A profile, a deed log with up to 6 posts, and full access to the CivicSense social feed. Follows, likes, bookmarks, and notifications are all included.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What does PRO add? <span>+</span></summary>
+      <p>A PRO badge, unlimited deeds, gallery inclusion, a directory listing, the impact story builder, availability status, and priority support.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is there a plan for teams and nonprofits? <span>+</span></summary>
+      <p>Yes. Team accounts put your group, your people, and your impact in one place. Business PRO adds a directory listing, team badges, and shared posts across everyone’s profile.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the Civic Feed? <span>+</span></summary>
+      <p>A chronological social feed for sharing good deeds, ideas, links, and works in progress. Posts appear in order from people you follow. No ads, no ranking, no reach games.</p>
+    </details>
+    <div style="text-align:center; margin-top:32px;">
+      <a href="#" class="btn btn-outline" style="color:#fff;border-color:#444;">VIEW ALL FAQS →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <h2>Thanks for hanging with us on<br>this little corner of the internet.</h2>
+  <a href="#" class="btn btn-outline" style="color:#fff;border-color:#444; margin-bottom:40px;">Share Your Deed ↑</a>
+  <div class="footer-links">
+    <a href="#">Home</a>
+    <a href="#feed">Feed</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#directory">Directory</a>
+    <a href="#stories">Stories</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">FAQs</a>
+    <a href="#">Brand</a>
+    <a href="#">Contact</a>
+    <a href="#">Newsletter</a>
+  </div>
+  <div class="footer-social">
+    <a href="#">𝕏</a>
+    <a href="#">◎</a>
+    <a href="#">in</a>
+    <a href="#">▶</a>
+  </div>
+  <p class="footer-copy">CIVICSENSE © 2026 · All rights reserved<br>
+  Terms · Privacy · Acceptable Use · Community Guidelines</p>
+</footer>
+
+<script>
+  // Light mouse parallax on floating cards
+  const cards = document.querySelectorAll('.float-card');
+  document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    cards.forEach((card, i) => {
+      const depth = (i % 5 + 1) * 0.4;
+      card.style.transform = `translate(${x * depth}px, ${y * depth}px)`;
+    });
+  });
+
+  // Smooth reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('section').forEach(sec => {
+    sec.style.opacity = '0';
+    sec.style.transform = 'translateY(30px)';
+    sec.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    observer.observe(sec);
+  });
+</script>
+</body>
+</html>
