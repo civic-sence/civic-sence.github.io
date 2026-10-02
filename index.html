@@ -894,6 +894,42 @@
     color: #555;
   }
 
+  /* =========================================================
+   1. Standard Properties (For Firefox)
+   ========================================================= */
+html {
+  /* Syntax: scrollbar-color: thumb-color track-color; */
+  scrollbar-color: #3b82f6 #f1f5f9; 
+  scrollbar-width: auto; /* Options: auto, thin, or none */
+}
+
+/* =========================================================
+   2. WebKit Pseudo-elements (For Chrome, Safari, and Edge)
+   ========================================================= */
+/* The entire scrollbar area */
+html::-webkit-scrollbar {
+  width: 12px;               /* Width of a vertical scrollbar */
+  height: 12px;              /* Height of a horizontal scrollbar */
+}
+
+/* The background track that the scrollbar slides along */
+html::-webkit-scrollbar-track {
+  background: #f1f5f9;       /* Light gray background */
+  border-radius: 100vw;      /* Fully rounded pill-shape track */
+}
+
+/* The draggable handle */
+html::-webkit-scrollbar-thumb {
+  background: #3b82f6;       /* Blue handle color */
+  border-radius: 100vw;      /* Fully rounded pill-shape handle */
+  border: 3px solid #f1f5f9; /* Creates padding around the handle */
+}
+
+/* The handle color when you hover over it */
+html::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;       /* Darker blue on hover */
+}
+
   /* ========== RESPONSIVE ========== */
   @media (max-width: 900px) {
     .nav-links { display: none; }
