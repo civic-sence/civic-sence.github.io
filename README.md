@@ -13,6 +13,7 @@ A social network for everyday good — people upload the good things they did to
 | `social.html` | Live social feed (post, load, realtime) |
 | `business-profile.html` | Edit profile (auth required) |
 | `supabase-schema.sql` | Full database schema |
+| `hire.html` | Hire |
 
 ## Supabase (already wired)
 
